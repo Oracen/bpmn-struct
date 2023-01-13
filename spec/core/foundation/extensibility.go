@@ -19,9 +19,12 @@ func CreateExtension(definition ExtensionDefinition) Extension {
 	}
 }
 
-func (e Extension) Validate() (errors []error) {
-	json, _ := json.Marshal(e)
-	name := fmt.Sprintf("Extension:%s", md5.Sum(json))
+func (e Extension) Validate(name string) (errors []error) {
+	if name == "" {
+		json, _ := json.Marshal(e)
+		name = fmt.Sprintf("Extension:%s", md5.Sum(json))
+	}
+
 	checks := []error{
 		validation.ArrZeroOne(name, "MustUnderstand", e.MustUnderstand),
 		validation.ValNonzero(name, "Definition", e.Definition),
@@ -41,8 +44,11 @@ func CreateExtensionDefinition(name string) ExtensionDefinition {
 	}
 }
 
-func (e ExtensionDefinition) Validate() (errors []error) {
-	name := fmt.Sprintf("ExtensionDefinition:%s", e.Name)
+func (e ExtensionDefinition) Validate(name string) (errors []error) {
+	if name == "" {
+		name = fmt.Sprintf("ExtensionDefinition:%s", e.Name)
+	}
+
 	checks := []error{
 		validation.ValNonzero(name, "Name", e.Name),
 	}
@@ -63,8 +69,11 @@ func CreateExtensionAttributeDefinition(name, typeName string) ExtensionAttribut
 	}
 }
 
-func (e ExtensionAttributeDefinition) Validate() (errors []error) {
-	name := fmt.Sprintf("ExtensionAttributeDefinition:%s", e.Name)
+func (e ExtensionAttributeDefinition) Validate(name string) (errors []error) {
+	if name == "" {
+		name = fmt.Sprintf("ExtensionAttributeDefinition:%s", e.Name)
+	}
+
 	checks := []error{
 		validation.ValNonzero(name, "Name", e.Name),
 		validation.ValNonzero(name, "Type", e.Name),
@@ -93,14 +102,17 @@ func CreateExtensionAttributeValue(definition ExtensionAttributeDefinition, valu
 	}
 }
 
-func (e ExtensionAttributeValue) Validate() (errors []error) {
-	value := append(e.Value, e.ValueRef...)[0]
-	name := fmt.Sprintf("ExtensionAttributeValue:%s", value)
+func (e ExtensionAttributeValue) Validate(name string) (errors []error) {
+	if name == "" {
+		value := append(e.Value, e.ValueRef...)[0]
+		name = fmt.Sprintf("ExtensionAttributeValue:%s", value)
+	}
+
 	checks := []error{
 		validation.ArrZeroOne(name, "Value", e.Value),
 		validation.ArrZeroOne(name, "ValueRef", e.ValueRef),
 		validation.ArraysMaxCount(name, "Value,ValueRef", 1, e.Value, e.ValueRef),
-		validation.ValNonzero(name, "Type", e.ExtensionAttributeDefinition),
+		validation.ValNonzero(name, "ExtensionAttributeDefinition", e.ExtensionAttributeDefinition),
 	}
 	return validation.FilterErrors(checks)
 }

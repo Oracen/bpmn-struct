@@ -21,8 +21,11 @@ func CreateBaseElement(id string) BaseElement {
 	}
 }
 
-func (b BaseElement) Validate() (errors []error) {
-	name := fmt.Sprintf("Import:%s", b.Id)
+func (b BaseElement) Validate(name string) (errors []error) {
+	if name == "" {
+		name = fmt.Sprintf("Import:%s", b.Id)
+	}
+
 	checks := []error{
 		validation.ValNonzero(name, "Id", b.Id),
 	}

@@ -7,22 +7,29 @@ import (
 )
 
 type Documentation struct {
+	BaseElement
 	Text       string `xml:"text" json:"text"`
 	TextFormat string `xml:"textFormat" json:"textFormat"`
 }
 
-func CreateDocumentation(text string) Documentation {
+func CreateDocumentation(id, text string) Documentation {
+	baseElement := CreateBaseElement(id)
 	return Documentation{
-		Text:       text,
-		TextFormat: "text/plain",
+		BaseElement: baseElement,
+		Text:        text,
+		TextFormat:  "text/plain",
 	}
 }
 
-func (d Documentation) Validate() (errors []error) {
-	name := fmt.Sprintf("Import:%s", d.Text[:constants.IdentifierTruncationLen])
-	checks := []error{
+func (d Documentation) Validate(name string) (errors []error) {
+	if name == "" {
+		name = fmt.Sprintf("Import:%s", d.Text[:constants.IdentifierTruncationLen])
+	}
+
+	checksBase := d.BaseElement.Validate(name)
+	checksCurrent := []error{
 		validation.ValNonzero(name, "ImportType", d.Text),
 		validation.ValNonzero(name, "Namespace", d.TextFormat),
 	}
-	return validation.FilterErrors(checks)
+	return validation.FilterErrors(append(checksBase, checksCurrent...))
 }

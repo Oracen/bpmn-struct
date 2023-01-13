@@ -9,6 +9,7 @@ var (
 	errLenArrayNotZeroOrOne = errors.New("array is should have length 0 or 1")
 	errLenArrayLTOne        = errors.New("array is should have at least one object")
 	errNumItemsExceedsCount = errors.New("number of objects in array should not exceed count")
+	errInvalidEnumValue     = errors.New("given enum value does not exist")
 )
 
 type valueError[T any] struct {
@@ -38,4 +39,10 @@ func FilterErrors(checks []error) (errors []error) {
 		}
 	}
 	return
+
+}
+
+func NewEnumValidationError[T any](structName, field string, validValues []T, got T) (err error) {
+	valid := fmt.Sprintf("%v, valid values %v", got, validValues)
+	return newValueError(structName, field, valid, errInvalidEnumValue)
 }
