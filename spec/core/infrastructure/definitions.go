@@ -1,6 +1,7 @@
 package infrastructure
 
 import (
+	bpmndi "bpmn-struct/spec/bpmn_di"
 	"bpmn-struct/spec/core/foundation"
 	"bpmn-struct/validation"
 	"fmt"
@@ -13,7 +14,7 @@ type Definitions struct {
 	ExpressionLanguage []string                  `xml:"expressionLanguage" json:"expressionLanguage"`
 	TypeLanguage       []string                  `xml:"typeLanguage" json:"typeLanguage"`
 	RootElements       []foundation.RootElement  `xml:"rootElements" json:"rootElements"`
-	Diagrams           []BPMNDiagram             `xml:"diagrams" json:"diagrams"`
+	Diagrams           []bpmndi.BPMNDiagram      `xml:"diagrams" json:"diagrams"`
 	Imports            []Import                  `xml:"imports" json:"imports"`
 	Extensions         []foundation.Extension    `xml:"extensions" json:"extensions"`
 	Relationships      []foundation.Relationship `xml:"relationships" json:"relationships"`
@@ -30,7 +31,7 @@ func CreateDefinitions(id, name, targetNamespace string) Definitions {
 		ExpressionLanguage: []string{"http://www.w3.org/1999/XPath"},
 		TypeLanguage:       []string{"http://www.w3.org/2001/XMLSchema"},
 		RootElements:       []foundation.RootElement{},
-		Diagrams:           []BPMNDiagram{},
+		Diagrams:           []bpmndi.BPMNDiagram{},
 		Imports:            []Import{},
 		Extensions:         []foundation.Extension{},
 		Relationships:      []foundation.Relationship{},
