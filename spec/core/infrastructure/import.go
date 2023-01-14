@@ -9,7 +9,7 @@ import (
 type Import struct {
 	ImportType string   `xml:"importType" json:"importType"`
 	Location   []string `xml:"location" json:"location"`
-	Namespace  string   `xml:"importType" json:"importType"`
+	Namespace  string   `xml:"namespace" json:"namespace"`
 }
 
 func CreateImport(importType, namespace string) Import {
