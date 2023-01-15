@@ -1,8 +1,6 @@
 package foundation
 
 import (
-	"fmt"
-
 	"github.com/Oracen/bpmn-struct/shared"
 	"github.com/Oracen/bpmn-struct/validation"
 )
@@ -23,14 +21,14 @@ func CreateDocumentation(id, text string) Documentation {
 }
 
 func (d Documentation) Validate(name string) (errors []error) {
-	if name == "" {
-		name = fmt.Sprintf("Import:%s", shared.TruncateStringField(d.Text))
-	}
+	checks := []error{}
+	name = shared.TypeNameString(name, d, shared.TruncateStringField(d.Text))
 
-	checksBase := d.BaseElement.Validate(name)
-	checksCurrent := []error{
+	checks = append(checks, d.BaseElement.Validate(name)...)
+	checks = append(
+		checks,
 		validation.ValNonzero(name, "ImportType", d.Text),
 		validation.ValNonzero(name, "Namespace", d.TextFormat),
-	}
-	return validation.FilterErrors(append(checksBase, checksCurrent...))
+	)
+	return validation.FilterErrors(checks)
 }

@@ -1,3 +1,3 @@
 package constants
 
-const IdentifierTruncationLen = 32
+const IdentifierTruncationLen = 16

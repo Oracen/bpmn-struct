@@ -1,8 +1,7 @@
 package foundation
 
 import (
-	"fmt"
-
+	"github.com/Oracen/bpmn-struct/shared"
 	"github.com/Oracen/bpmn-struct/validation"
 )
 
@@ -24,10 +23,7 @@ func CreateBaseElement(id string) BaseElement {
 
 func (b BaseElement) Validate(name string) (errors []error) {
 	checks := []error{}
-	if name == "" {
-		name = fmt.Sprintf("Import:%s", b.Id)
-	}
-
+	name = shared.TypeNameString(name, b, b.Id)
 	checks = append(checks, validation.ArrCheckItems(name, b.Documentation)...)
 	checks = append(checks, validation.ArrCheckItems(name, b.ExtensionDefinitions)...)
 	checks = append(checks, validation.ArrCheckItems(name, b.ExtensionValues)...)

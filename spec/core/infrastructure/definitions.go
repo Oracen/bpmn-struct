@@ -1,8 +1,7 @@
 package infrastructure
 
 import (
-	"fmt"
-
+	"github.com/Oracen/bpmn-struct/shared"
 	bpmndi "github.com/Oracen/bpmn-struct/spec/bpmn_di"
 	"github.com/Oracen/bpmn-struct/spec/core/foundation"
 	"github.com/Oracen/bpmn-struct/validation"
@@ -42,18 +41,23 @@ func CreateDefinitions(id, name, targetNamespace string) Definitions {
 }
 
 func (d Definitions) Validate(name string) (errors []error) {
-	if name == "" {
-		name = fmt.Sprintf("Definitions:%s", d.Name)
-	}
+	checks := []error{}
+	name = shared.TypeNameString(name, d, d.Name)
 
-	checksBase := d.BaseElement.Validate(name)
-	checksCurrent := []error{
+	checks = append(checks, d.BaseElement.Validate(name)...)
+	checks = append(checks, validation.ArrCheckItems(name, d.RootElements)...)
+	checks = append(checks, validation.ArrCheckItems(name, d.Diagrams)...)
+	checks = append(checks, validation.ArrCheckItems(name, d.Imports)...)
+	checks = append(checks, validation.ArrCheckItems(name, d.Extensions)...)
+	checks = append(checks, validation.ArrCheckItems(name, d.Relationships)...)
+	checks = append(
+		checks,
 		validation.ValNonzero(name, "Name", d.Name),
 		validation.ValNonzero(name, "TargetNamespace", d.TargetNamespace),
 		validation.ArrZeroOne(name, "ExpressionLanguage", d.ExpressionLanguage),
 		validation.ArrZeroOne(name, "TypeLanguage", d.TypeLanguage),
 		validation.ArrZeroOne(name, "Exporter", d.Exporter),
 		validation.ArrZeroOne(name, "ExporterVersion", d.ExporterVersion),
-	}
-	return validation.FilterErrors(append(checksBase, checksCurrent...))
+	)
+	return validation.FilterErrors(checks)
 }

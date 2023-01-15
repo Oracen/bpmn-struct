@@ -1,9 +1,8 @@
 package infrastructure
 
 import (
-	"fmt"
-
 	"github.com/Oracen/bpmn-struct/constants"
+	"github.com/Oracen/bpmn-struct/shared"
 	"github.com/Oracen/bpmn-struct/validation"
 )
 
@@ -21,8 +20,8 @@ func CreateImport(importType, namespace string) Import {
 	}
 }
 
-func (i Import) Validate() (errors []error) {
-	name := fmt.Sprintf("Import:%s", i.ImportType)
+func (i Import) Validate(name string) (errors []error) {
+	name = shared.TypeNameString(name, i, i.ImportType)
 	checks := []error{
 		validation.ValNonzero(name, "ImportType", i.ImportType),
 		validation.ArrZeroOne(name, "Location", i.Location),

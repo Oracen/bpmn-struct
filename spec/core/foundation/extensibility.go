@@ -1,10 +1,9 @@
 package foundation
 
 import (
-	"crypto/md5"
-	"encoding/json"
 	"fmt"
 
+	"github.com/Oracen/bpmn-struct/shared"
 	"github.com/Oracen/bpmn-struct/validation"
 )
 
@@ -22,15 +21,18 @@ func CreateExtension(name string) Extension {
 }
 
 func (e Extension) Validate(name string) (errors []error) {
+	checks := []error{}
+	value := ""
 	if name == "" {
-		json, _ := json.Marshal(e)
-		name = fmt.Sprintf("Extension:%s", md5.Sum(json))
+		value = shared.HashMd5(e)
 	}
-
-	checks := []error{
+	name = shared.TypeNameString(name, e, value)
+	checks = append(checks, e.Definition.Validate(name)...)
+	checks = append(
+		checks,
 		validation.ArrZeroOne(name, "MustUnderstand", e.MustUnderstand),
 		validation.ValNonzero(name, "Definition", e.Definition),
-	}
+	)
 	return validation.FilterErrors(checks)
 }
 
@@ -47,13 +49,10 @@ func CreateExtensionDefinition(name string) ExtensionDefinition {
 }
 
 func (e ExtensionDefinition) Validate(name string) (errors []error) {
-	if name == "" {
-		name = fmt.Sprintf("ExtensionDefinition:%s", e.Name)
-	}
-
-	checks := []error{
-		validation.ValNonzero(name, "Name", e.Name),
-	}
+	checks := []error{}
+	name = shared.TypeNameString(name, e, e.Name)
+	checks = append(checks, validation.ArrCheckItems(name, e.ExtensionAttributeDefinitions)...)
+	checks = append(checks, validation.ValNonzero(name, "Name", e.Name))
 	return validation.FilterErrors(checks)
 }
 
@@ -72,10 +71,7 @@ func CreateExtensionAttributeDefinition(name, typeName string) ExtensionAttribut
 }
 
 func (e ExtensionAttributeDefinition) Validate(name string) (errors []error) {
-	if name == "" {
-		name = fmt.Sprintf("ExtensionAttributeDefinition:%s", e.Name)
-	}
-
+	name = shared.TypeNameString(name, e, e.Name)
 	checks := []error{
 		validation.ValNonzero(name, "Name", e.Name),
 		validation.ValNonzero(name, "Type", e.Name),
@@ -106,16 +102,16 @@ func CreateExtensionAttributeValue(name, typeName string, value any, isRef bool)
 }
 
 func (e ExtensionAttributeValue) Validate(name string) (errors []error) {
-	if name == "" {
-		value := append(e.Value, e.ValueRef...)[0]
-		name = fmt.Sprintf("ExtensionAttributeValue:%s", value)
-	}
-
-	checks := []error{
+	checks := []error{}
+	value := fmt.Sprintf("%s", append(e.Value, e.ValueRef...)[0])
+	name = shared.TypeNameString(name, e, value)
+	checks = append(checks, e.ExtensionAttributeDefinition.Validate(name)...)
+	checks = append(
+		checks,
 		validation.ArrZeroOne(name, "Value", e.Value),
 		validation.ArrZeroOne(name, "ValueRef", e.ValueRef),
 		validation.ArraysMaxCount(name, "Value,ValueRef", 1, e.Value, e.ValueRef),
 		validation.ValNonzero(name, "ExtensionAttributeDefinition", e.ExtensionAttributeDefinition),
-	}
+	)
 	return validation.FilterErrors(checks)
 }

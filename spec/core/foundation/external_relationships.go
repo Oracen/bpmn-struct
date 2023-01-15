@@ -1,8 +1,7 @@
 package foundation
 
 import (
-	"fmt"
-
+	"github.com/Oracen/bpmn-struct/shared"
 	"github.com/Oracen/bpmn-struct/validation"
 )
 
@@ -57,14 +56,13 @@ func CreateRelationship(id, typeName string, direction RelationshipDirection, so
 }
 
 func (r Relationship) Validate(name string) []error {
-	if name == "" {
-		name = fmt.Sprintf("ExtensionAttributeValue:%s", r.Type)
-	}
-	checksBase := r.BaseElement.Validate(name)
-	checksCurrent := []error{
+	checks := []error{}
+	name = shared.TypeNameString(name, r, r.Type)
+	checks = append(checks, r.BaseElement.Validate(name)...)
+	checks = append(checks,
 		validation.ValNonzero(name, "Type", r.Type),
 		validation.ArrOneOrMore(name, "Sources", r.Sources),
 		validation.ArrOneOrMore(name, "Targets", r.Targets),
-	}
-	return validation.FilterErrors(append(checksBase, checksCurrent...))
+	)
+	return validation.FilterErrors(checks)
 }
