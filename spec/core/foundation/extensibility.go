@@ -1,10 +1,11 @@
 package foundation
 
 import (
-	"bpmn-struct/validation"
 	"crypto/md5"
 	"encoding/json"
 	"fmt"
+
+	"github.com/Oracen/bpmn-struct/validation"
 )
 
 type Extension struct {
@@ -12,7 +13,8 @@ type Extension struct {
 	Definition     ExtensionDefinition `xml:"definition" json:"definition"`
 }
 
-func CreateExtension(definition ExtensionDefinition) Extension {
+func CreateExtension(name string) Extension {
+	definition := CreateExtensionDefinition(name)
 	return Extension{
 		MustUnderstand: []bool{false},
 		Definition:     definition,
@@ -88,7 +90,8 @@ type ExtensionAttributeValue struct {
 	ExtensionAttributeDefinition ExtensionAttributeDefinition `xml:"extensionAttributeDefinition" json:"extensionAttributeDefinition"`
 }
 
-func CreateExtensionAttributeValue(definition ExtensionAttributeDefinition, value any, isRef bool) ExtensionAttributeValue {
+func CreateExtensionAttributeValue(name, typeName string, value any, isRef bool) ExtensionAttributeValue {
+	definition := CreateExtensionAttributeDefinition(name, typeName)
 	valueItem, valueRef := []any{}, []any{}
 	if isRef {
 		valueRef = append(valueRef, value)

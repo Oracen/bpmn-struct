@@ -1,6 +1,10 @@
 package validation
 
-import "reflect"
+import (
+	"reflect"
+
+	"github.com/Oracen/bpmn-struct/shared"
+)
 
 func ValNonzero[T any](structName, fieldName string, value T) (err error) {
 	if reflect.ValueOf(&value).Elem().IsZero() {
@@ -19,7 +23,7 @@ func ArrZeroOne[T any](structName, fieldName string, array []T) (err error) {
 
 func ArrOneOrMore[T any](structName, fieldName string, array []T) (err error) {
 	arrayLen := len(array)
-	if arrayLen <= 1 {
+	if arrayLen == 0 {
 		err = newValueError(structName, fieldName, arrayLen, errLenArrayLTOne)
 	}
 	return
@@ -34,6 +38,14 @@ func ArraysMaxCount[T any](structName, fieldName string, maxCount int, arrays ..
 	}
 	if count > maxCount {
 		err = newValueError(structName, fieldName, count, errNumItemsExceedsCount)
+	}
+	return
+}
+
+func ArrCheckItems[T shared.BPMNStruct](name string, inputField []T) (errors []error) {
+	errors = []error{}
+	for _, item := range inputField {
+		errors = append(errors, item.Validate(name)...)
 	}
 	return
 }

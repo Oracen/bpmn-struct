@@ -1,8 +1,9 @@
 package foundation
 
 import (
-	"bpmn-struct/validation"
 	"fmt"
+
+	"github.com/Oracen/bpmn-struct/validation"
 )
 
 type BaseElement struct {
@@ -22,12 +23,14 @@ func CreateBaseElement(id string) BaseElement {
 }
 
 func (b BaseElement) Validate(name string) (errors []error) {
+	checks := []error{}
 	if name == "" {
 		name = fmt.Sprintf("Import:%s", b.Id)
 	}
 
-	checks := []error{
-		validation.ValNonzero(name, "Id", b.Id),
-	}
+	checks = append(checks, validation.ArrCheckItems(name, b.Documentation)...)
+	checks = append(checks, validation.ArrCheckItems(name, b.ExtensionDefinitions)...)
+	checks = append(checks, validation.ArrCheckItems(name, b.ExtensionValues)...)
+	checks = append(checks, validation.ValNonzero(name, "Id", b.Id))
 	return validation.FilterErrors(checks)
 }

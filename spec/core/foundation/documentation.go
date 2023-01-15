@@ -1,9 +1,10 @@
 package foundation
 
 import (
-	"bpmn-struct/constants"
-	"bpmn-struct/validation"
 	"fmt"
+
+	"github.com/Oracen/bpmn-struct/shared"
+	"github.com/Oracen/bpmn-struct/validation"
 )
 
 type Documentation struct {
@@ -23,7 +24,7 @@ func CreateDocumentation(id, text string) Documentation {
 
 func (d Documentation) Validate(name string) (errors []error) {
 	if name == "" {
-		name = fmt.Sprintf("Import:%s", d.Text[:constants.IdentifierTruncationLen])
+		name = fmt.Sprintf("Import:%s", shared.TruncateStringField(d.Text))
 	}
 
 	checksBase := d.BaseElement.Validate(name)

@@ -1,8 +1,9 @@
 package foundation
 
 import (
-	"bpmn-struct/validation"
 	"fmt"
+
+	"github.com/Oracen/bpmn-struct/validation"
 )
 
 type RelationshipDirection int
@@ -44,14 +45,14 @@ type Relationship struct {
 	Targets   []any                 `xml:"targets" json:"targets"`
 }
 
-func CreateRelationship(id, typeName string, direction RelationshipDirection, sources, targets []any) Relationship {
+func CreateRelationship(id, typeName string, direction RelationshipDirection, source, target any) Relationship {
 	baseElement := CreateBaseElement(id)
 	return Relationship{
 		BaseElement: baseElement,
 		Type:        typeName,
 		Direction:   direction,
-		Sources:     sources,
-		Targets:     targets,
+		Sources:     []any{source},
+		Targets:     []any{target},
 	}
 }
 

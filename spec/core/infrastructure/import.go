@@ -1,9 +1,10 @@
 package infrastructure
 
 import (
-	"bpmn-struct/constants"
-	"bpmn-struct/validation"
 	"fmt"
+
+	"github.com/Oracen/bpmn-struct/constants"
+	"github.com/Oracen/bpmn-struct/validation"
 )
 
 type Import struct {

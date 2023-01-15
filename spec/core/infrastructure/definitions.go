@@ -1,10 +1,11 @@
 package infrastructure
 
 import (
-	bpmndi "bpmn-struct/spec/bpmn_di"
-	"bpmn-struct/spec/core/foundation"
-	"bpmn-struct/validation"
 	"fmt"
+
+	bpmndi "github.com/Oracen/bpmn-struct/spec/bpmn_di"
+	"github.com/Oracen/bpmn-struct/spec/core/foundation"
+	"github.com/Oracen/bpmn-struct/validation"
 )
 
 type Definitions struct {
