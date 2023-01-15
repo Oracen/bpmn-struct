@@ -1,4 +1,4 @@
-package foundation
+package infrastructure
 
 import (
 	"testing"
@@ -6,10 +6,10 @@ import (
 	testhelpers "github.com/Oracen/bpmn-struct/test_helpers"
 )
 
-func TestBaseElement(t *testing.T) {
+func TestDefinitions(t *testing.T) {
 	name, fn := testhelpers.CreateDefaultIsValid(
 		t,
-		CreateBaseElement("id"),
+		CreateDefinitions("id", "name", "targetNamespace"),
 	)
 	t.Run(name, fn)
 }

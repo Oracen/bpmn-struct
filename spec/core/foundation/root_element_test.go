@@ -7,8 +7,9 @@ import (
 )
 
 func TestRootElement(t *testing.T) {
-	testhelpers.CreateDefaultIsValid(
+	name, fn := testhelpers.CreateDefaultIsValid(
 		t,
 		CreateRootElement("id"),
 	)
+	t.Run(name, fn)
 }

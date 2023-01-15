@@ -7,8 +7,9 @@ import (
 )
 
 func TestDocumentation(t *testing.T) {
-	testhelpers.CreateDefaultIsValid(
+	name, fn := testhelpers.CreateDefaultIsValid(
 		t,
 		CreateDocumentation("id", "a docstring"),
 	)
+	t.Run(name, fn)
 }
