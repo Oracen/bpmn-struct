@@ -22,11 +22,7 @@ func CreateExtension(name string) Extension {
 
 func (e Extension) Validate(name string) (errors []error) {
 	checks := []error{}
-	value := ""
-	if name == "" {
-		value = shared.HashMd5(e)
-	}
-	name = shared.TypeNameString(name, e, value)
+	name = shared.TypeNameString(name, e, shared.HashMd5(e))
 	checks = append(checks, e.Definition.Validate(name)...)
 	checks = append(
 		checks,

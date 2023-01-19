@@ -1,1 +1,2 @@
 - Need to support importers and exporters for XML, WSDL and BPMN + custom
+- Add constraint on common.Artifact to prevent them being linked by SequenceFlow or MessageFlow
