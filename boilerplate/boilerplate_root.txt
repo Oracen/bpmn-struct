@@ -1,0 +1,22 @@
+type XXXX struct {
+	foundation.RootElement
+	XXX       string `xml:"XXX" json:"XXX"`
+	XXX  string `xml:"XXX" json:"XXX"`
+}
+
+func CreateXXXX(id, text string) XXXX {
+	rootElement := foundation.CreateRootElement(id)
+	return XXXX{
+		RootElement: rootElement,
+		Text:        text,
+		TextFormat:  "text/plain",
+	}
+}
+
+func (x XXXX) Validate(name string) []error {
+	checks := []error{}
+
+	name = shared.TypeNameString(name, t, t.Id)
+	checks = append(checks, t.RootElement.Validate(name)...)
+	return validation.FilterErrors(checks)
+}

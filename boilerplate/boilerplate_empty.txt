@@ -1,0 +1,10 @@
+type XXXX struct {
+}
+
+func CreateXXXX() XXXX {
+	return XXXX{}
+}
+
+func (m XXXX) Validate(name string) []error {
+	return []error{}
+}

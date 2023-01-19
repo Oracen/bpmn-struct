@@ -97,6 +97,7 @@ func (g Group) Validate(name string) []error {
 	checks = append(checks, g.Artifact.Validate(name)...)
 	checks = append(checks, validation.ArrZeroOne(name, "CategoryValueRef", g.CategoryValueRef))
 	checks = append(checks, validation.ArrCheckItems(name, g.CategoryValueRef)...)
+
 	return validation.FilterErrors(checks)
 }
 
@@ -122,6 +123,8 @@ func (c Category) Validate(name string) []error {
 	checks = append(checks, c.RootElement.Validate(name)...)
 	checks = append(checks, validation.ArrCheckItems(name, c.CategoryValue)...)
 	checks = append(checks, validation.ArrZeroOne(name, "CategoryValue", c.CategoryValue))
+	checks = append(checks, validation.ValNonzero(name, "Name", c.Name))
+
 	return validation.FilterErrors(checks)
 }
 
@@ -150,6 +153,7 @@ func (c CategoryValue) Validate(name string) []error {
 	checks = append(checks, validation.ArrCheckItems(name, c.Category)...)
 	checks = append(checks, validation.ArrCheckItems(name, c.CategorizedFlowElements)...)
 	checks = append(checks, validation.ArrZeroOne(name, "Category", c.Category))
+	checks = append(checks, validation.ValNonzero(name, "Value", c.Value))
 
 	return validation.FilterErrors(checks)
 }
@@ -174,5 +178,8 @@ func (t TextAnnotation) Validate(name string) []error {
 
 	name = shared.TypeNameString(name, t, t.Id)
 	checks = append(checks, t.BaseElement.Validate(name)...)
+	checks = append(checks, validation.ValNonzero(name, "Text", t.Text))
+	checks = append(checks, validation.ValNonzero(name, "TextFormat", t.TextFormat))
+
 	return validation.FilterErrors(checks)
 }
