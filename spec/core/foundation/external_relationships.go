@@ -12,10 +12,10 @@ var (
 )
 
 const (
-	RDNone RelationshipDirection = iota
-	RDForward
-	RDBackward
-	RDBoth
+	RELATIONSHIP_DIRECTION_None RelationshipDirection = iota
+	RELATIONSHIP_DIRECTION_Forward
+	RELATIONSHIP_DIRECTION_Backward
+	RELATIONSHIP_DIRECTION_Both
 )
 
 func (r RelationshipDirection) String() string {

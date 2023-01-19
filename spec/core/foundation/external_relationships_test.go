@@ -10,7 +10,7 @@ func TestRelationship(t *testing.T) {
 	value := true
 	name, fn := testhelpers.CreateDefaultIsValid(
 		t,
-		CreateRelationship("id", "typeName", RDBoth, "any", value),
+		CreateRelationship("id", "typeName", RELATIONSHIP_DIRECTION_Both, "any", value),
 	)
 	t.Run(name, fn)
 }

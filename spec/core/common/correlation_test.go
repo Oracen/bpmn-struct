@@ -7,7 +7,7 @@ import (
 )
 
 var (
-	testCorrExpression = CreateFormalExpression("id", "body", CreateItemDefinition())
+	testCorrExpression = CreateFormalExpression("id", "body", CreateItemDefinition("id", ITEM_KIND_Information))
 	testCorrMessage    = CreateMessage()
 )
 

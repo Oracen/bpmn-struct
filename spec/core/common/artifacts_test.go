@@ -20,7 +20,7 @@ func TestAssociation(t *testing.T) {
 	ref2 := foundation.CreateBaseElement("id2")
 	name, fn := testhelpers.CreateDefaultIsValid(
 		t,
-		CreateAssociation("innerId", ref1, ref2, ADBoth),
+		CreateAssociation("innerId", ref1, ref2, ASSOCIATION_DIRECTION_Both),
 	)
 	t.Run(name, fn)
 }

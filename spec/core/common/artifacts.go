@@ -13,20 +13,20 @@ var (
 )
 
 const (
-	ADNone AssociationDirection = iota
-	ADOne
-	ADBoth
+	ASSOCIATION_DIRECTION_None AssociationDirection = iota
+	ASSOCIATION_DIRECTION_One
+	ASSOCIATION_DIRECTION_Both
 )
 
-func (r AssociationDirection) String() string {
-	return associationDirectionString[r]
+func (a AssociationDirection) String() string {
+	return associationDirectionString[a]
 }
 
-func (r AssociationDirection) EnumIndex() int {
-	return int(r)
+func (a AssociationDirection) EnumIndex() int {
+	return int(a)
 }
 
-func (r AssociationDirection) ToEnum(input string) (relp AssociationDirection, err error) {
+func (a AssociationDirection) ToEnum(input string) (relp AssociationDirection, err error) {
 	for idx, item := range associationDirectionString {
 		if item == input {
 			return AssociationDirection(idx), nil
