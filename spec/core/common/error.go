@@ -30,5 +30,11 @@ func (e Error) Validate(name string) []error {
 	checks = append(checks, e.RootElement.Validate(name)...)
 	checks = append(checks, validation.ArrCheckItems(name, e.StructureRef)...)
 	checks = append(checks, validation.ArrZeroOne(name, "StructureRef", e.StructureRef))
+	checks = append(
+		checks,
+		validation.ValNonzero(name, "Name", e.Name),
+		validation.ValNonzero(name, "ErrorCode", e.ErrorCode),
+	)
+
 	return validation.FilterErrors(checks)
 }
