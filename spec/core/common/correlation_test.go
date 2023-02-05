@@ -9,6 +9,9 @@ import (
 var (
 	testCorrExpression = CreateFormalExpression("id", "body", CreateItemDefinition("id", ITEM_KIND_Information))
 	testCorrMessage    = CreateMessage("id")
+	refExpressions     = []CorrelationPropertyRetrievalExpression{
+		CreateCorrelationPropertyRetrievalExpression("id", testCorrExpression, testCorrMessage),
+	}
 )
 
 func TestCorrelationKey(t *testing.T) {
@@ -29,12 +32,10 @@ func TestCorrelationPropertyRetrievalExpression(t *testing.T) {
 }
 
 func TestCorrelationProperty(t *testing.T) {
+
 	name, fn := testhelpers.CreateDefaultIsValid(
 		t,
-		CreateCorrelationProperty(
-			"id",
-			CreateCorrelationPropertyRetrievalExpression("id", testCorrExpression, testCorrMessage),
-		),
+		CreateCorrelationProperty("id", refExpressions),
 	)
 	t.Run(name, fn)
 }
@@ -53,10 +54,7 @@ func TestCorrelationPropertyBinding(t *testing.T) {
 		CreateCorrelationPropertyBinding(
 			"id",
 			testCorrExpression,
-			CreateCorrelationProperty(
-				"id2",
-				CreateCorrelationPropertyRetrievalExpression("id3", testCorrExpression, testCorrMessage),
-			),
+			CreateCorrelationProperty("id2", refExpressions),
 		),
 	)
 	t.Run(name, fn)

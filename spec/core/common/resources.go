@@ -27,6 +27,7 @@ func (r Resource) Validate(name string) []error {
 	name = shared.TypeNameString(name, r, r.Id)
 	checks = append(checks, r.RootElement.Validate(name)...)
 	checks = append(checks, validation.ArrCheckItems(name, r.ResourceParameters)...)
+	checks = append(checks, validation.ValNonzero(name, "Name", r.Name))
 	return validation.FilterErrors(checks)
 }
 
@@ -53,6 +54,7 @@ func (r ResourceParameter) Validate(name string) []error {
 	name = shared.TypeNameString(name, r, r.Id)
 	checks = append(checks, r.RootElement.Validate(name)...)
 	checks = append(checks, validation.ArrCheckItems(name, r.ItemRef)...)
+	checks = append(checks, validation.ValNonzero(name, "Name", r.Name))
 
 	return validation.FilterErrors(checks)
 }

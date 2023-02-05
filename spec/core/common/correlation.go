@@ -38,13 +38,13 @@ type CorrelationProperty struct {
 	CorrelationPropertyRetrievalExpression []CorrelationPropertyRetrievalExpression `xml:"correlationPropertyRetrievalExpression" json:"correlationPropertyRetrievalExpression"`
 }
 
-func CreateCorrelationProperty(id string, retrievalExpression CorrelationPropertyRetrievalExpression) CorrelationProperty {
+func CreateCorrelationProperty(id string, retrievalExpressions []CorrelationPropertyRetrievalExpression) CorrelationProperty {
 	baseElement := foundation.CreateBaseElement(id)
 	return CorrelationProperty{
 		BaseElement:                            baseElement,
 		Name:                                   []string{},
 		Type:                                   []string{},
-		CorrelationPropertyRetrievalExpression: []CorrelationPropertyRetrievalExpression{retrievalExpression},
+		CorrelationPropertyRetrievalExpression: retrievalExpressions,
 	}
 }
 
