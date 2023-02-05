@@ -8,7 +8,7 @@ import (
 
 var (
 	testCorrExpression = CreateFormalExpression("id", "body", CreateItemDefinition("id", ITEM_KIND_Information))
-	testCorrMessage    = CreateMessage()
+	testCorrMessage    = CreateMessage("id")
 )
 
 func TestCorrelationKey(t *testing.T) {

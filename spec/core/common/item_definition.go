@@ -38,10 +38,10 @@ func (i ItemKind) ToEnum(input string) (relp GatewayDirection, err error) {
 
 type ItemDefinition struct {
 	foundation.RootElement
-	ItemKind     ItemKind
-	StructureRef []any
-	Import       []infrastructure.Import
-	IsCollection bool
+	ItemKind     ItemKind                `xml:"itemKind" json:"itemKind"`
+	StructureRef []any                   `xml:"structureRef" json:"structureRef"`
+	Import       []infrastructure.Import `xml:"import" json:"import"`
+	IsCollection bool                    `xml:"isCollection" json:"isCollection"`
 }
 
 func CreateItemDefinition(id string, itemKind ItemKind) ItemDefinition {
