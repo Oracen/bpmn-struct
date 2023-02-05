@@ -7,9 +7,11 @@ import (
 )
 
 func TestSequenceFlow(t *testing.T) {
+	sourceRef := CreateFlowNode("source")
+	targetRef := CreateFlowNode("target")
 	name, fn := testhelpers.CreateDefaultIsValid(
 		t,
-		CreateSequenceFlow("id", "source", "target"),
+		CreateSequenceFlow("id", sourceRef, targetRef),
 	)
 	t.Run(name, fn)
 }

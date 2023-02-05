@@ -13,14 +13,13 @@ type SequenceFlow struct {
 	IsImmediate         []bool       `xml:"isImmediate" json:"isImmediate"`
 }
 
-func CreateSequenceFlow(id, sourceId, targetId string) SequenceFlow {
+func CreateSequenceFlow(id string, source, target FlowNode) SequenceFlow {
 	flowElement := CreateFlowElement(id)
-	sourceRef := CreateFlowNode(sourceId)
-	targetRef := CreateFlowNode(targetId)
+
 	return SequenceFlow{
 		FlowElement:         flowElement,
-		SourceRef:           sourceRef,
-		TargetRef:           targetRef,
+		SourceRef:           source,
+		TargetRef:           target,
 		ConditionExpression: []Expression{},
 		IsImmediate:         []bool{false},
 	}
