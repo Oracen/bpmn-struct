@@ -3,7 +3,7 @@ package common
 import (
 	"github.com/Oracen/bpmn-struct/shared"
 	"github.com/Oracen/bpmn-struct/spec/core/foundation"
-	"github.com/Oracen/bpmn-struct/spec/process"
+	process "github.com/Oracen/bpmn-struct/spec/process/process_support"
 	"github.com/Oracen/bpmn-struct/validation"
 )
 
