@@ -1,6 +1,10 @@
 package pool_and_participant
 
-import "testing"
+import (
+	"testing"
+
+	testhelpers "github.com/Oracen/bpmn-struct/test_helpers"
+)
 
 func TestParticipant(t *testing.T) {
 	name, fn := testhelpers.CreateDefaultIsValid(
@@ -13,7 +17,7 @@ func TestParticipant(t *testing.T) {
 func TestPartnerEntity(t *testing.T) {
 	name, fn := testhelpers.CreateDefaultIsValid(
 		t,
-		CreatePartnerEntity("id"),
+		CreatePartnerEntity("id", "name", CreateParticipant("id")),
 	)
 	t.Run(name, fn)
 }
@@ -21,7 +25,7 @@ func TestPartnerEntity(t *testing.T) {
 func TestPartnerRole(t *testing.T) {
 	name, fn := testhelpers.CreateDefaultIsValid(
 		t,
-		CreatePartnerRole("id"),
+		CreatePartnerRole("id", "name", CreateParticipant("id")),
 	)
 	t.Run(name, fn)
 }
@@ -29,7 +33,7 @@ func TestPartnerRole(t *testing.T) {
 func TestParticipantMultiplicity(t *testing.T) {
 	name, fn := testhelpers.CreateDefaultIsValid(
 		t,
-		CreateParticipantMultiplicity("id"),
+		CreateParticipantMultiplicity(),
 	)
 	t.Run(name, fn)
 }
@@ -37,7 +41,7 @@ func TestParticipantMultiplicity(t *testing.T) {
 func TestParticipantAssociation(t *testing.T) {
 	name, fn := testhelpers.CreateDefaultIsValid(
 		t,
-		CreateParticipantAssociation("id"),
+		CreateParticipantAssociation("id", CreateParticipant("id2"), CreateParticipant("id3")),
 	)
 	t.Run(name, fn)
 }

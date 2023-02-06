@@ -1,9 +1,12 @@
 package pool_and_participant
 
 import (
+	"fmt"
+
 	"github.com/Oracen/bpmn-struct/shared"
 	"github.com/Oracen/bpmn-struct/spec/core/foundation"
 	"github.com/Oracen/bpmn-struct/spec/core/service"
+	"github.com/Oracen/bpmn-struct/spec/process"
 	"github.com/Oracen/bpmn-struct/validation"
 )
 
@@ -32,11 +35,25 @@ func CreateParticipant(id string) Participant {
 	}
 }
 
-func (x Participant) Validate(name string) []error {
+func (p Participant) Validate(name string) []error {
 	checks := []error{}
 
-	name = shared.TypeNameString(name, t, t.Id)
-	checks = append(checks, t.BaseElement.Validate(name)...)
+	name = shared.TypeNameString(name, p, p.Id)
+	checks = append(checks, p.BaseElement.Validate(name)...)
+	checks = append(checks, validation.ArrNonzero(name, "Name", p.Name)...)
+	checks = append(checks, validation.ArrCheckItems(name, p.ProcessRef)...)
+	checks = append(checks, validation.ArrCheckItems(name, p.PartnerRoleRef)...)
+	checks = append(checks, validation.ArrCheckItems(name, p.PartnerEntityRef)...)
+	checks = append(checks, validation.ArrCheckItems(name, p.InterfaceRef)...)
+	checks = append(checks, validation.ArrCheckItems(name, p.ParticipantMultiplicity)...)
+	checks = append(checks, validation.ArrCheckItems(name, p.EndPointRefs)...)
+	checks = append(
+		checks,
+		validation.ArrZeroOne(name, "Name", p.Name),
+		validation.ArrZeroOne(name, "ProcessRef", p.ProcessRef),
+		validation.ArrZeroOne(name, "ParticipantMultiplicity", p.ParticipantMultiplicity),
+		validation.ArrZeroOne(name, "EndPointRefs", p.EndPointRefs),
+	)
 	return validation.FilterErrors(checks)
 }
 
@@ -55,11 +72,13 @@ func CreatePartnerEntity(id, name string, participant Participant) PartnerEntity
 	}
 }
 
-func (x PartnerEntity) Validate(name string) []error {
+func (p PartnerEntity) Validate(name string) []error {
 	checks := []error{}
 
-	name = shared.TypeNameString(name, t, t.Id)
-	checks = append(checks, t.BaseElement.Validate(name)...)
+	name = shared.TypeNameString(name, p, p.Id)
+	checks = append(checks, p.BaseElement.Validate(name)...)
+	checks = append(checks, p.ParticipantRef.Validate(name)...)
+	checks = append(checks, validation.ValNonzero(name, "Name", p.Name))
 	return validation.FilterErrors(checks)
 }
 
@@ -78,11 +97,13 @@ func CreatePartnerRole(id, name string, participant Participant) PartnerRole {
 	}
 }
 
-func (x PartnerRole) Validate(name string) []error {
+func (p PartnerRole) Validate(name string) []error {
 	checks := []error{}
 
-	name = shared.TypeNameString(name, t, t.Id)
-	checks = append(checks, t.BaseElement.Validate(name)...)
+	name = shared.TypeNameString(name, p, p.Id)
+	checks = append(checks, p.BaseElement.Validate(name)...)
+	checks = append(checks, p.ParticipantRef.Validate(name)...)
+	checks = append(checks, validation.ValNonzero(name, "Name", p.Name))
 	return validation.FilterErrors(checks)
 }
 
@@ -100,11 +121,20 @@ func CreateParticipantMultiplicity() ParticipantMultiplicity {
 	}
 }
 
-func (x ParticipantMultiplicity) Validate(name string) []error {
+func (p ParticipantMultiplicity) Validate(name string) []error {
 	checks := []error{}
 
-	name = shared.TypeNameString(name, t, t.Id)
-	checks = append(checks, t.BaseElement.Validate(name)...)
+	identifier := fmt.Sprintf("%v-%v-%v", p.Minimum, p.Maximum, p.NumParticipants)
+	name = shared.TypeNameString(name, p, identifier)
+	checks = append(checks, validation.ArrGTEZero(name, "Maximum", p.Maximum)...)
+	checks = append(checks, validation.ArrGTEZero(name, "NumParticipants", p.NumParticipants)...)
+
+	checks = append(
+		checks,
+		validation.ValGTEZero(name, "Minimum", p.Minimum),
+		validation.ArrZeroOne(name, "Maximum", p.Maximum),
+		validation.ArrZeroOne(name, "NumParticipants", p.NumParticipants),
+	)
 	return validation.FilterErrors(checks)
 }
 
@@ -123,10 +153,12 @@ func CreateParticipantAssociation(id string, innerParticipant, outerParticipant 
 	}
 }
 
-func (x ParticipantAssociation) Validate(name string) []error {
+func (p ParticipantAssociation) Validate(name string) []error {
 	checks := []error{}
 
-	name = shared.TypeNameString(name, t, t.Id)
-	checks = append(checks, t.BaseElement.Validate(name)...)
+	name = shared.TypeNameString(name, p, p.Id)
+	checks = append(checks, p.BaseElement.Validate(name)...)
+	checks = append(checks, p.InnerParticipantRef.Validate(name)...)
+	checks = append(checks, p.OuterParticipantRef.Validate(name)...)
 	return validation.FilterErrors(checks)
 }

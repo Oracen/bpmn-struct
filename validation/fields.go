@@ -4,11 +4,35 @@ import (
 	"reflect"
 
 	"github.com/Oracen/bpmn-struct/shared"
+	"golang.org/x/exp/constraints"
 )
+
+func ValGTEZero[T constraints.Float | constraints.Integer](structName, fieldName string, value T) (err error) {
+	if value < 0 {
+		err = newValueError(structName, fieldName, value, errValueLTZero)
+	}
+	return
+}
+
+func ArrGTEZero[T constraints.Float | constraints.Integer](structName, fieldName string, array []T) (err []error) {
+	err = []error{}
+	for _, item := range array {
+		err = append(err, ValGTEZero(structName, fieldName, item))
+	}
+	return
+}
 
 func ValNonzero[T any](structName, fieldName string, value T) (err error) {
 	if reflect.ValueOf(&value).Elem().IsZero() {
-		err = newValueError(structName, fieldName, value, errLenArrayNotZeroOrOne)
+		err = newValueError(structName, fieldName, value, errValueZeroEquivalent)
+	}
+	return
+}
+
+func ArrNonzero[T any](structName, fieldName string, array []T) (err []error) {
+	err = []error{}
+	for _, item := range array {
+		err = append(err, ValNonzero(structName, fieldName, item))
 	}
 	return
 }

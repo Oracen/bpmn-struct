@@ -8,6 +8,8 @@ import (
 var (
 	errLenArrayNotZeroOrOne = errors.New("array is should have length 0 or 1")
 	errLenArrayLTOne        = errors.New("array is should have at least one object")
+	errValueLTZero          = errors.New("numeric value should be greater than or equal to 0")
+	errValueZeroEquivalent  = errors.New("value should not be null or zero equivalent")
 	errNumItemsExceedsCount = errors.New("number of objects in array should not exceed count")
 	errInvalidEnumValue     = errors.New("given enum value does not exist")
 )
