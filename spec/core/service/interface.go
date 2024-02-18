@@ -3,16 +3,16 @@ package service
 import (
 	"github.com/Oracen/bpmn-struct/shared"
 	"github.com/Oracen/bpmn-struct/spec/core/foundation"
-	"github.com/Oracen/bpmn-struct/spec/process/activities"
+	"github.com/Oracen/bpmn-struct/spec/process/activity"
 	"github.com/Oracen/bpmn-struct/validation"
 )
 
 type Interface struct {
 	foundation.RootElement
-	Name             string                       `xml:"name" json:"name"`
-	Operations       []Operation                  `xml:"operations" json:"operations"`
-	CallableElements []activities.CallableElement `xml:"callableElements" json:"callableElements"`
-	Element          []any                        `xml:"element" json:"element"`
+	Name             string                     `xml:"name" json:"name"`
+	Operations       []Operation                `xml:"operations" json:"operations"`
+	CallableElements []activity.CallableElement `xml:"callableElements" json:"callableElements"`
+	Element          []any                      `xml:"element" json:"element"`
 }
 
 func CreateInterface(id, name string, operations []Operation) Interface {
@@ -21,7 +21,7 @@ func CreateInterface(id, name string, operations []Operation) Interface {
 		RootElement:      rootElement,
 		Name:             name,
 		Operations:       operations,
-		CallableElements: []activities.CallableElement{},
+		CallableElements: []activity.CallableElement{},
 		Element:          []any{},
 	}
 }

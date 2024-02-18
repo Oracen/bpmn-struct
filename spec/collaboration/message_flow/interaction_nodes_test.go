@@ -9,7 +9,7 @@ import (
 func TestInteractionNode(t *testing.T) {
 	name, fn := testhelpers.CreateDefaultIsValid(
 		t,
-		CreateInteractionNode("id"),
+		CreateInteractionNode(),
 	)
 	t.Run(name, fn)
 }

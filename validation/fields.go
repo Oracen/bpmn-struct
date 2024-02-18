@@ -53,6 +53,14 @@ func ArrOneOrMore[T any](structName, fieldName string, array []T) (err error) {
 	return
 }
 
+func ArrTwoOrMore[T any](structName, fieldName string, array []T) (err error) {
+	arrayLen := len(array)
+	if arrayLen < 2 {
+		err = newValueError(structName, fieldName, arrayLen, errLenArrayLTOne)
+	}
+	return
+}
+
 func ArraysMaxCount[T any](structName, fieldName string, maxCount int, arrays ...[]T) (err error) {
 	count := 0
 	for idx := 0; idx < len(arrays); idx++ {

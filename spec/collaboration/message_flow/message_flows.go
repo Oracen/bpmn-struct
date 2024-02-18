@@ -7,6 +7,8 @@ import (
 	"github.com/Oracen/bpmn-struct/validation"
 )
 
+type MessageFlowRef string
+
 type MessageFlow struct {
 	foundation.BaseElement
 	SourceRef  InteractionNode  `xml:"sourceRef" json:"sourceRef"`
